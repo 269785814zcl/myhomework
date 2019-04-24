@@ -1,0 +1,534 @@
+#include<stdio.h>
+#include<string.h>
+#define size 4
+
+void whoisyourdady(int *a)
+{
+    int i,j;
+    char c[15];
+    printf("请输入金手指密码：");
+    scanf("%s",c);
+    getchar();
+    if(strcmp(c,"sxy,iloveyou")==0)
+    {
+        printf("请输入需要修改的行数：");
+        scanf("%d",&i);
+        printf("请输入需要修改的列数：");
+        scanf("%d",&j);
+        printf("请输入数据：");
+        scanf("%d",&*(a+(i-1)*size+j-1));
+        getchar();
+    }
+    else
+    {
+        printf("密码错误！！\n");
+    }
+}
+
+void score(int *a)
+{
+    int i,j,sum=0;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            sum+=*(a+i*size+j);
+        }
+    }
+    printf("------------------------------------------\n");
+    printf("------------------------------------------\n");
+    printf("||             分数：%-10d         ||\n",sum);
+    printf("------------------------------------------\n");
+    printf("------------------------------------------\n");
+    printf("         |           |           |        \n");
+    printf("         |           |           |        \n");
+    printf("       \\ | /       \\ | /       \\ | /      \n");
+    printf("        \\|/         \\|/         \\|/       \n");
+    printf("         *           *           *        \n");
+}
+
+void display(int *a)
+{
+    int i,j;
+    for(i=0;i<4;i++)
+    {
+        printf("------------------------------------------\n");
+        printf("------------------------------------------\n");
+        for(j=0;j<4;j++)
+        {
+            printf("|| %-5d  ",*(a+i*size+j));
+
+        }
+        printf("||");
+        printf("\n");
+    }
+    printf("------------------------------------------\n");
+    printf("------------------------------------------\n");
+}
+
+int empty1(int *a)//返回1代表输，返回0代表不满
+{
+    int k=1,i,j;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            if(*(a+i*size+j)==0)k=0;
+        }
+    }
+    if(k==1)
+    {
+        for(i=0;i<4;i++)
+        {
+            for(j=0;j<3;j++)
+            {
+                if(*(a+i*size+j)==*(a+i*size+j+1))k=0;
+            }
+        }
+    }
+    if(k==1)
+    {
+        for(j=0;j<4;j++)
+        {
+            for(i=0;i<3;i++)
+            {
+                if(*(a+i*size+j)==*(a+(i+1)*size+j))k=0;
+            }
+        }
+    }
+    return k;
+}
+
+int empty2(int *a)//返回1代表满，返回0代表不满
+{
+    int k=1,i,j;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            if(*(a+i*size+j)==0)k=0;
+        }
+    }
+    return k;
+}
+
+void Rand(int *a)
+{
+    int n,m,k=0;
+    n=(rand()%2+1)*2;
+    do
+    {
+        m=rand()%16;
+        if(*(a+m)==0)
+        {
+            *(a+m)=n;
+            k=1;
+        }
+    }while(k!=1);
+
+}
+
+int Pre_w(int *a)
+{
+    int t=0,j,i;
+    for(j=0;j<4;j++)
+    {
+        t=0;
+        for(i=0;i<4;i++)
+        {
+            if(t==0&&*(a+i*size+j)==0)
+            {
+                t=1;
+            }
+            if(t==1&&*(a+i*size+j)!=0)
+            {
+                t=2;
+                return t;
+            }
+        }
+    }
+    t=0;
+    for(j=0;j<4;j++)
+    {
+        for(i=0;i<3;i++)
+        {
+            if(*(a+i*size+j)==*(a+(i+1)*size+j)&&*(a+i*size+j)!=0&&*(a+(i+1)*size+j)!=0)
+            {
+                t=2;
+                return t;
+            }
+        }
+    }
+    return t;
+}
+
+int Pre_a(int *a)
+{
+    int t=0,j,i;
+    for(i=0;i<4;i++)
+    {
+        t=0;
+        for(j=0;j<4;j++)
+        {
+            if(t==0&&*(a+i*size+j)==0)
+            {
+                t=1;
+            }
+            if(t==1&&*(a+i*size+j)!=0)
+            {
+                t=2;
+                return t;
+            }
+        }
+    }
+    t=0;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<3;j++)
+        {
+            if(*(a+i*size+j)==*(a+i*size+j+1)&&*(a+i*size+j)!=0&&*(a+i*size+j+1)!=0)
+            {
+                t=2;
+                return t;
+            }
+        }
+    }
+    return t;
+}
+
+int Pre_s(int *a)
+{
+    int t=0,j,i;
+    for(j=0;j<4;j++)
+    {
+        t=0;
+        for(i=3;i>=0;i--)
+        {
+            if(t==0&&*(a+i*size+j)==0)
+            {
+                t=1;
+            }
+            if(t==1&&*(a+i*size+j)!=0)
+            {
+                t=2;
+                return t;
+            }
+        }
+    }
+    t=0;
+    for(j=0;j<4;j++)
+    {
+        for(i=0;i<3;i++)
+        {
+            if(*(a+i*size+j)==*(a+(i+1)*size+j)&&*(a+i*size+j)!=0&&*(a+(i+1)*size+j)!=0)
+            {
+                t=2;
+                return t;
+            }
+        }
+    }
+    return t;
+}
+
+int Pre_d(int *a)
+{
+    int t=0,j,i;
+    for(i=0;i<4;i++)
+    {
+        t=0;
+        for(j=3;j>=0;j++)
+        {
+            if(t==0&&*(a+i*size+j)==0)
+            {
+                t=1;
+            }
+            if(t==1&&*(a+i*size+j)!=0)
+            {
+                t=2;
+                return t;
+            }
+        }
+    }
+    t=0;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<3;j++)
+        {
+            if(*(a+i*size+j)==*(a+i*size+j+1)&&*(a+i*size+j)!=0&&*(a+i*size+j+1)!=0)
+            {
+                t=2;
+                return t;
+            }
+        }
+    }
+    return t;
+}
+
+
+
+
+void runw(int *a)
+{
+    int i,j,t=0,k=0;
+        for(j=0;j<4;j++)
+        {
+            t=0;
+            i=0;
+            k=0;
+            while(i<4)
+            {
+                if(*(a+i*size+j)==0)
+                    t++;
+                else
+                {
+                    if((i-t)!=0)
+                    {
+                        if(*(a+(i-t-1)*size+j)==*(a+i*size+j)&&k==0)
+                        {
+                            *(a+(i-t-1)*size+j)=2**(a+(i-t-1)*size+j);
+                            *(a+i*size+j)=0;
+                            k=1;
+                            t++;
+                        }
+                        else if(t!=0)
+                        {
+                            *(a+(i-t)*size+j)=*(a+i*size+j);
+                            *(a+i*size+j)=0;
+                            k=0;
+                        }
+                    }
+                    else if(t!=0)
+                    {
+                        *(a+(i-t)*size+j)=*(a+i*size+j);
+                        *(a+i*size+j)=0;
+                        k=0;
+                    }
+                }
+                i++;
+            }
+        }
+    if(empty2(a)==0)
+    Rand(a);
+}
+
+void runa(int *a)
+{
+    int i,j,t=0,k=0;
+        for(i=0;i<4;i++)
+        {
+            t=0;
+            j=0;
+            k=0;
+            while(j<4)
+            {
+                if(*(a+i*size+j)==0)
+                    t++;
+                else
+                {
+                    if((j-t)!=0)
+                    {
+                        if(*(a+i*size+j-t-1)==*(a+i*size+j)&&k==0)
+                        {
+                            *(a+i*size+j-t-1)=2**(a+i*size+j-t-1);
+                            *(a+i*size+j)=0;
+                            k=1;
+                            t++;
+                        }
+                        else if(t!=0)
+                        {
+                            *(a+i*size+j-t)=*(a+i*size+j);
+                            *(a+i*size+j)=0;
+                            k=0;
+                        }
+                    }
+                    else if(t!=0)
+                    {
+                        *(a+i*size+j-t)=*(a+i*size+j);
+                        *(a+i*size+j)=0;
+                        k=0;
+                    }
+                }
+                j++;
+            }
+        }
+    if(empty2(a)==0)
+    Rand(a);
+}
+
+void runs(int *a)
+{
+    int i,j,t=0,k=0;
+        for(j=0;j<4;j++)
+        {
+            t=0;
+            i=3;
+            k=0;
+            while(i>=0)
+            {
+                if(*(a+i*size+j)==0)
+                    t++;
+                else
+                {
+                    if((3-i-t)!=0)
+                    {
+                        if(*(a+(i+t+1)*size+j)==*(a+i*size+j)&&k==0)
+                        {
+                            *(a+(i+t+1)*size+j)=2**(a+(i+t+1)*size+j);
+                            *(a+i*size+j)=0;
+                            k=1;
+                            t++;
+                        }
+                        else if(t!=0)
+                        {
+                            *(a+(i+t)*size+j)=*(a+i*size+j);
+                            *(a+i*size+j)=0;
+                            k=0;
+                        }
+                    }
+                    else if(t!=0)
+                    {
+                        *(a+(i+t)*size+j)=*(a+i*size+j);
+                        *(a+i*size+j)=0;
+                        k=0;
+                    }
+                }
+                i--;
+            }
+        }
+    if(empty2(a)==0)
+    Rand(a);
+}
+
+void rund(int *a)
+{
+    int i,j,t=0,k=0;
+        for(i=0;i<4;i++)
+        {
+            t=0;
+            j=3;
+            k=0;
+            while(j>=0)
+            {
+                if(*(a+i*size+j)==0)
+                    t++;
+                else
+                {
+                    if((3-j-t)!=0)
+                    {
+                        if(*(a+i*size+j+t+1)==*(a+i*size+j)&&k==0)
+                        {
+                            *(a+i*size+j+t+1)=2**(a+i*size+j+t+1);
+                            *(a+i*size+j)=0;
+                            k=1;
+                            t++;
+                        }
+                        else if(t!=0)
+                        {
+                            *(a+i*size+j+t)=*(a+i*size+j);
+                            *(a+i*size+j)=0;
+                            k=0;
+                        }
+                    }
+                    else if(t!=0)
+                    {
+                        *(a+i*size+j+t)=*(a+i*size+j);
+                        *(a+i*size+j)=0;
+                        k=0;
+                    }
+                }
+                j--;
+            }
+        }
+    if(empty2(a)==0)
+    Rand(a);
+}
+
+void copy_back(int *a,int *b)//将a复制给b
+{
+    int i,j;
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            *(b+i*size+j)=*(a+i*size+j);
+        }
+    }
+}
+
+
+
+int main()
+{
+    int A[4][4]={0},i,j,B[4][4];//初始化4*4方阵
+    int *a=&A[0][0],*b=&B[0][0];
+    char q,m;
+
+    printf("开始游戏请按Y，结束游戏请按N：");
+    m=getchar();
+    getchar();
+  while(m=='Y'||m=='y'||m=='*')
+  {
+    if(m=='Y'||m=='y')
+    {
+        Rand(a);
+        Rand(a);
+        copy_back(a,b);
+        score(a);
+        display(a);
+    }
+    while(empty1(a)!=1)
+    {
+        printf("\n向上：w\n向下：s\n向左:a\n向右:d\n返回：b\n请输入操作：");
+        q=getchar();
+        getchar();
+        if(q=='w'&&Pre_w(a)==2)
+        {
+            copy_back(a,b);
+            runw(a);
+        }
+        if(q=='s'&&Pre_s(a)==2)
+        {
+            copy_back(a,b);
+            runs(a);
+        }
+        if(q=='a'&&Pre_a(a)==2)
+        {
+            copy_back(a,b);
+            runa(a);
+        }
+        if(q=='d'&&Pre_d(a)==2)
+        {
+            copy_back(a,b);
+            rund(a);
+        }
+        if(q=='*')
+        {
+            copy_back(a,b);
+            whoisyourdady(a);
+        }
+        if(q=='b')
+            copy_back(b,a);
+        score(a);
+        display(a);
+    }
+    printf("游戏失败，是否重玩？\n");
+    printf("再来一局请按Y，结束游戏请按N：");
+    m=getchar();
+    getchar();
+    if(m=='*')
+        copy_back(a,b);
+        whoisyourdady(a);
+        score(a);
+        display(a);
+    if(m=='y'||m=='Y')
+    {
+        for(i=0;i<4;i++)
+            for(j=0;j<4;j++)
+                *(a+i*size+j)=0;
+    }
+  }
+    printf("------------------------------------------\n");
+    printf("---------------game over!!!---------------\n");
+    printf("------------------------------------------\n");
+    score(a);
+}
